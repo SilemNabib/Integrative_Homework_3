@@ -16,13 +16,16 @@ public class NeoTunesManager {
     public static void main(String[] args){
         NeoTunesManager system = new NeoTunesManager();
 
+        
     }
 
     public void menu(){
 
     }
 
-    public void createUser(){
+    public String createUser(){
+        String message = "";
+
         String nickname;
         String id;
         int option;
@@ -49,6 +52,7 @@ public class NeoTunesManager {
 
                     neotunesObj.addUser(neotunesObj.createConsumer(consumerType, nickname, id));
                     
+                    message = "Se registro con exito el usuario consumidor";
                     break;
 
                 case 2:
@@ -67,18 +71,54 @@ public class NeoTunesManager {
                     sc.nextLine();
 
                     neotunesObj.addUser(neotunesObj.createProducer(producerType, nickname, id, name, url));
+
+                    message = "Se registro con exito el usuario productor";
                     break;
             }
         
         } else {
-            System.out.println("Ya existe un usuario con ese id");
+            message = "Ya existe un usuario con ese id";
         }
 
-
+        return message;
 
     }
 
-    public void createAudio(){
+    public String createPlaylist() {
+        String message = "";
+
+        String name;
+        String id;
+
+        int userSeleciton;
+
+
+        System.out.println(neotunesObj.showConsumers());
+        System.out.println("Seleccione el usuario (segun el indice): ");
+        userSeleciton = sc.nextInt();
+        sc.nextLine();
+        userSeleciton--;
+
+        System.out.println("Digite el nombre de la playlist: ");
+        name = sc.nextLine();
+
+        System.out.println("Digite el id: ");
+        id = sc.nextLine();
+
+        if (neotunesObj.addPlaylistToConsumer(userSeleciton, neotunesObj.createPlaylist(name, id))){
+            message = "La playlist se agrego exitosamente";
+
+        } else {
+            message = "La playlist no se agregp, el usuario alcanzon el limite de playlist existentes";
+
+        }
+        
+        return message;
+    }
+
+    public String createAudio(){
+        String message = "";
+
         int option;
         int userSelection;
         String name;
@@ -127,6 +167,8 @@ public class NeoTunesManager {
                 sc.nextLine();
 
                 neotunesObj.addAudio(userSelection, neotunesObj.createSong(name, url, duration, album, value, genreSelection));
+
+                message = "La cancion se agrego exitosamente";
                 break;
             
             case 2:
@@ -161,7 +203,17 @@ public class NeoTunesManager {
                 sc.nextLine();
 
                 neotunesObj.addAudio(userSelection, neotunesObj.createPodcast(name, url, duration, description, categorySelection));
+                
+                message = "Se agrego el podcast exitosamente";
+                break;
+
+            default:
+                message = "opcion fuera de rango";
                 break;
         }
+
+        return message;
     }
+
+
 }

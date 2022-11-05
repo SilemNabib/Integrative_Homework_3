@@ -16,6 +16,7 @@ public abstract class Consumer extends User {
 
         songTotalTime = 0;
         podcastTotalTime = 0;
+        playlists = new ArrayList<Playlist>();
         listenedGenre = new ArrayList<Genre>();
         listenedCategory = new ArrayList<Category>();
     }

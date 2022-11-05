@@ -138,7 +138,8 @@ public class NeoTunesController {
             return true;
 
         } else {
-            return true;
+            return false;
+            
         }
 
     }
