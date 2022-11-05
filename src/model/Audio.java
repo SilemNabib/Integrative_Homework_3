@@ -1,18 +1,26 @@
 package model;
 
-public abstract class Audio {
-    private String url;
+public abstract class Audio implements Playable{
     private String name;
-    private int totalNumber;
-    private int duration;
+    private String url;
+    private double duration;
+    private int reproductedTimes;
 
-    public Audio(String url, String name, int duration) {
-        this.url = url;
+    public Audio (String name, String url, double duration) {
         this.name = name;
-        totalNumber = 0;
+        this.url = url;
         this.duration = duration;
-
+        reproductedTimes = 0;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public String getUrl() {
         return url;
@@ -23,37 +31,21 @@ public abstract class Audio {
     }
 
     
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    
-    public int getTotalNumber() {
-        return totalNumber;
-    }
-
-    public void setTotalNumber(int totalNumber) {
-        this.totalNumber = totalNumber;
-    }
-
-
-    public int getDuration() {
+    public double getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(double duration) {
         this.duration = duration;
     }
 
-    public String toString(){
-        String message = "";
 
-        message += "Nombre: "+name+"\nDuracion: "+duration+"\n";
-
-        return message;
+    public int getReproductedTimes() {
+        return reproductedTimes;
     }
+
+    public void setReproductedTimes(int reproductedTimes) {
+        this.reproductedTimes = reproductedTimes;
+    }
+
 }

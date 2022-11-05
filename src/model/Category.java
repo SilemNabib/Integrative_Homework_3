@@ -1,9 +1,8 @@
 package model;
 
-public enum Category{
-    
+public enum Category {
     POLITICS,
     ENTERTAINMENT,
     VIDEOGAMES,
-    FAHSION
+    FASHION
 }

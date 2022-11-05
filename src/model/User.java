@@ -1,22 +1,26 @@
 package model;
 
+import java.time.LocalDate;
+
 public abstract class User {
-
-    private String nickName;
+    private String nickname;
     private String id;
+    private LocalDate date;
 
-    public User (String nickName, String id){
-        
-        this.nickName = nickName;
+    public User (String nickname, String id) {
+        this.nickname = nickname;
         this.id = id;
+        date = LocalDate.now();
+
+    }
+    
+
+    public String getNickname() {
+        return nickname;
     }
 
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
 
@@ -28,11 +32,10 @@ public abstract class User {
         this.id = id;
     }
 
-    public String userToString() {
-        String message = "";
-
-        message += "Nombre de usuario: "+nickName+"\nIdentification: "+id+"\n";
-
-        return message;
+    
+    public LocalDate getDate() {
+        return date;
     }
+
+
 }

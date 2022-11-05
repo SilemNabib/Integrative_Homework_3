@@ -1,16 +1,13 @@
 package model;
 
-public class Podcast extends Audio{
-
+public class Podcast extends Audio {
     private String description;
     private Category category;
 
-    public Podcast(String url, String name, int duration, int categoryOption, String description) {
-        
-        super(url, name, duration);
+    public Podcast(String name, String url, double duration, String description, Category category) {
+        super(name, url, duration);
         this.description = description;
-
-        setCategory(categoryOption);
+        this.category = category;
     }
 
     public String getDescription() {
@@ -26,33 +23,8 @@ public class Podcast extends Audio{
         return category;
     }
 
-    public void setCategory(int categoryOption) {
-        switch (categoryOption) {
-            
-            case 1:
-                category = Category.POLITICS;
-                break;
-
-            case 2:
-                category = Category.ENTERTAINMENT;
-                break;
-
-            case 3:
-                category = Category.VIDEOGAMES;
-                break;
-            
-            case 4:
-                category = Category.FAHSION;
-                break;
-        }
-    }
-
-    public String toString() {
-        String message = "";
-
-        message += super.toString() + "Categoria: " + category;
-
-        return message;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 }

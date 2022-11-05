@@ -1,8 +1,8 @@
 package model;
 
-public class Premium extends Consumer {
+public class Premium extends Consumer{
     
-    public Premium(String nickName, String id) {
-        super(nickName, id);
+    public Premium (String nickname, String id){
+        super(nickname, id);
     }
 }

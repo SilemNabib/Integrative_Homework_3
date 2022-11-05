@@ -2,25 +2,22 @@ package model;
 
 import java.util.ArrayList;
 
-public abstract class Producer extends User {
-    
+public abstract class Producer extends User  {
     private ArrayList<Audio> audios;
+
     private String name;
     private String url;
-    private int totalTime;
-    private int totalNumber;
+    private int reproductedTimes;
+    private double listenedTime;
 
-
-    public Producer(String nickName, String id, String name, String url) {
-
-        super(nickName, id);
-
+    public Producer(String nickname, String id, String name, String url){
+        super(nickname, id);
         this.name = name;
         this.url = url;
-        totalTime = 0;
-        totalNumber = 0;
-
+        
         audios = new ArrayList<Audio>();
+        reproductedTimes = 0;
+        listenedTime = 0;
     }
 
     public String getName() {
@@ -31,7 +28,7 @@ public abstract class Producer extends User {
         this.name = name;
     }
 
-
+   
     public String getUrl() {
         return url;
     }
@@ -40,41 +37,26 @@ public abstract class Producer extends User {
         this.url = url;
     }
 
-
-    public int getTotalTime() {
-        return totalTime;
+   
+    public int getReproductedTimes() {
+        return reproductedTimes;
     }
 
-    public void setTotalTime(int totalTime) {
-        this.totalTime = totalTime;
+    public void setReproductedTimes(int reproductedTimes) {
+        this.reproductedTimes = reproductedTimes;
     }
 
-
-    public int getTotalNumber() {
-        return totalNumber;
+  
+    public double getListenedTime() {
+        return listenedTime;
     }
 
-    public void setTotalNumber(int totalNumber) {
-        this.totalNumber = totalNumber;
+    public void setListenedTime(double listenedTime) {
+        this.listenedTime = listenedTime;
     }
 
-
-    public ArrayList<Audio> getAudios(){
-        return audios;
-    }
-
-    public boolean addAudio(Audio newAudio) {
+    public boolean addAudioToProducer(Audio newAudio) {
         audios.add(newAudio);
         return true;
     }
-
-    
-    public String toString(){
-        String message = "";
-        
-        message += super.toString() + "Nombre: "+name+"\n";
-
-        return message;
-    }
-
 }

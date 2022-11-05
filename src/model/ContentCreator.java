@@ -1,8 +1,8 @@
 package model;
 
 public class ContentCreator extends Producer {
-    
-    public ContentCreator (String nickName, String id, String name, String url) {
-        super(nickName, id, name, url);
+    public ContentCreator (String nickname, String id, String name, String url) {
+        super(nickname, id, name, url);
     }
+    
 }

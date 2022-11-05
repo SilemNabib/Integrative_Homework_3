@@ -1,19 +1,17 @@
 package model;
 
 public class Song extends Audio {
-
-    private Genre genre;
     private String album;
     private double value;
     private int soldTimes;
+    private Genre genre;
 
-    public Song(String url, String name, int duration,int genreSelection, String album, double value) {
-        super(url, name, duration);
-        setGenre(genreSelection);
+    public Song(String name, String url, double duration, String album, double value, Genre genre){
+        super(name, url, duration);
         this.album = album;
         this.value = value;
         soldTimes = 0;
-        
+        this.genre = genre;
     }
 
     public String getAlbum() {
@@ -24,7 +22,7 @@ public class Song extends Audio {
         this.album = album;
     }
 
-    
+
     public double getValue() {
         return value;
     }
@@ -33,7 +31,7 @@ public class Song extends Audio {
         this.value = value;
     }
 
-    
+  
     public int getSoldTimes() {
         return soldTimes;
     }
@@ -47,24 +45,8 @@ public class Song extends Audio {
         return genre;
     }
 
-    public void setGenre(int genreSelection) {
-        switch (genreSelection) {
-            
-            case 1:
-                genre = Genre.ROCK;
-                break;
-
-            case 2:
-                genre = Genre.POP;
-                break;
-
-            case 3:
-                genre = Genre.TRAP;
-                break;
-            
-            case 4:
-                genre = Genre.HOUSE;
-                break;
-        }
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
+
 }
