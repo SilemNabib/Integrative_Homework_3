@@ -20,6 +20,10 @@ public abstract class Consumer extends User {
         listenedCategory = new ArrayList<Category>();
     }
 
+    public ArrayList<Playlist> getPlaylist() {
+        return playlists;
+    }
+
     public double getSongTotalTime() {
         return songTotalTime;
     }

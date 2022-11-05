@@ -59,7 +59,9 @@ public class Playlist {
     public String audioToString() {
         String message = "";
 
-
+        for (int i = 0; i<audios.size(); i++){
+            message += (i+1)+". "+audios.get(i).getName()+"\n";
+        }
 
         return message;
     }

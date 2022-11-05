@@ -123,4 +123,87 @@ public class NeoTunesController {
         
         return true;
     }
+
+    public Playlist createPlaylist(String name, String id) {
+        Playlist newPlaylist = new Playlist(name, id);
+
+        return newPlaylist;
+    }
+
+    public boolean addPlaylistToConsumer(int chosenConsumer, Playlist newPlaylist) {
+        Consumer tempUser = (Consumer) users.get(chosenConsumer);
+        
+        if (tempUser.addPlaylist(newPlaylist)) {
+            users.set(chosenConsumer, tempUser);
+            return true;
+
+        } else {
+            return true;
+        }
+
+    }
+
+    public String showArtists(){
+        String message = "";
+        
+        for (int i = 0; i<users.size(); i++){
+            if (users.get(i) instanceof Artist){
+               message  += ((i+1)+". "+users.get(i).getNickname()+"\n"); 
+            }
+        }
+
+        return message;
+    }
+
+    public String showAudios(){
+        String message = "";
+
+        for (int i = 0; i<audios.size(); i++){
+            message += (i+1)+". "+audios.get(i).getName()+" "+audios.get(i).getDuration()+"\n";
+        }
+
+        return message;
+    }
+
+    public String showContentCreators(){
+        String message = "";
+        
+        for (int i = 0; i<users.size(); i++){
+            if (users.get(i) instanceof ContentCreator){
+               message  += ((i+1)+". "+users.get(i).getNickname()+"\n"); 
+            }
+        }
+
+        return message;
+    }
+
+    public String showPlaylists(int indexConsumer) {
+        Consumer tempUser = (Consumer) users.get(indexConsumer);
+         
+        String message = tempUser.showPlaylists();
+       
+        return message;
+    }
+
+    public String showConsumers(){
+        String message = "";
+        
+        for (int i = 0; i<users.size(); i++){
+            if (users.get(i) instanceof Consumer){
+               message  += ((i+1)+". "+users.get(i).getNickname()+"\n"); 
+            }
+        }
+
+        return message;
+    }
+
+    public String showAudios(int indexConsumer, int indexPlaylist) {
+        Consumer tempUser = (Consumer) users.get(indexConsumer);
+         
+        String message = tempUser.getPlaylist().get(indexPlaylist).audioToString();
+       
+        return message;
+    }
+
+    
 }
