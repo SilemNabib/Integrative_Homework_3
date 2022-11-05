@@ -15,6 +15,8 @@ public class NeoTunesManager {
 
     public static void main(String[] args){
         NeoTunesManager system = new NeoTunesManager();
+        system.createUser();
+        system.createUser();
     }
 
     public void menu(){
@@ -46,7 +48,7 @@ public class NeoTunesManager {
                     consumerType = sc.nextInt();
                     sc.nextLine();
 
-                    neotunesObj.createConsumer(consumerType, nickname, id);
+                    neotunesObj.addUser(neotunesObj.createConsumer(consumerType, nickname, id));
                     
                     break;
 
@@ -65,11 +67,10 @@ public class NeoTunesManager {
                     producerType = sc.nextInt();
                     sc.nextLine();
 
-                    neotunesObj.createProducer(producerType, nickname, id, name, url);
+                    neotunesObj.addUser(neotunesObj.createProducer(producerType, nickname, id, name, url));
                     break;
             }
-            
-
+        
         } else {
             System.out.println("Ya existe un usuario con ese id");
         }
