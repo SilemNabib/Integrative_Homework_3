@@ -15,12 +15,54 @@ public class NeoTunesManager {
 
     public static void main(String[] args){
         NeoTunesManager system = new NeoTunesManager();
-
         
+        system.menu();
     }
 
     public void menu(){
+        String message = "";
+        int option = 0;
 
+        while(option != 5) {
+                System.out.println("MENU");
+                System.out.println("1. Agregar usuario");
+                System.out.println("2. Agregar audio");
+                System.out.println("3. Crear playlist");
+                System.out.println("4. Editar playlist");
+                System.out.println("5. Cerrar menu");
+                System.out.print("Seleccion: ");
+                option = sc.nextInt();
+                sc.nextLine();
+
+        switch(option) {
+            case 1:
+                message = createUser();
+                break;
+            
+            case 2:
+                message = createAudio();
+                break;
+
+            case 3:
+                message = createPlaylist();
+                break;
+
+            case 4:
+                message = editPlaylist();
+                break;
+
+            case 5:
+                message = "Cerrando menu";
+                break;
+
+            default:
+                message = "Opcion fuera de rango";
+                break;
+        }                
+        
+            System.out.println(message);
+        }
+        
     }
 
     public String createUser(){
@@ -30,15 +72,17 @@ public class NeoTunesManager {
         String id;
         int option;
         
-        System.out.println("nickName: ");
+        System.out.println("Agregando usuario");
+
+        System.out.print("nickName: ");
         nickname = sc.nextLine();
 
-        System.out.println("Id: ");
+        System.out.print("Id: ");
         id = sc.nextLine();
 
         if (neotunesObj.checkIfIdExists(id)){
             
-            System.out.println("Consumidor o Productor (1 o 2): ");
+            System.out.print("Consumidor o Productor (1 o 2): ");
             option = sc.nextInt();
             sc.nextLine();
 
@@ -46,7 +90,9 @@ public class NeoTunesManager {
                 case 1:
                     int consumerType;
 
-                    System.out.println("Estandar o premium (1 o 2): ");
+                    System.out.println("Agregando consumidor");
+
+                    System.out.print("Estandar o premium (1 o 2): ");
                     consumerType = sc.nextInt();
                     sc.nextLine();
 
@@ -60,13 +106,15 @@ public class NeoTunesManager {
                     String name;
                     String url;
 
-                    System.out.println("Nombre: ");
+                    System.out.println("Agregando productor");
+
+                    System.out.print("Nombre: ");
                     name = sc.nextLine();
 
-                    System.out.println("Url: ");
+                    System.out.print("Url: ");
                     url = sc.nextLine();
 
-                    System.out.println("Artista o creador de contenido (1 o 2): ");
+                    System.out.print("Artista o creador de contenido (1 o 2): ");
                     producerType = sc.nextInt();
                     sc.nextLine();
 
@@ -92,24 +140,25 @@ public class NeoTunesManager {
 
         int userSeleciton;
 
+        System.out.println("Creando playlist");
 
         System.out.println(neotunesObj.showConsumers());
-        System.out.println("Seleccione el usuario (segun el indice): ");
+        System.out.print("Seleccione el usuario (segun el indice): ");
         userSeleciton = sc.nextInt();
         sc.nextLine();
         userSeleciton--;
 
-        System.out.println("Digite el nombre de la playlist: ");
+        System.out.print("Digite el nombre de la playlist: ");
         name = sc.nextLine();
 
-        System.out.println("Digite el id: ");
+        System.out.print("Digite el id: ");
         id = sc.nextLine();
 
         if (neotunesObj.addPlaylistToConsumer(userSeleciton, neotunesObj.createPlaylist(name, id))){
             message = "La playlist se agrego exitosamente";
 
         } else {
-            message = "La playlist no se agregp, el usuario alcanzon el limite de playlist existentes";
+            message = "La playlist no se agregp, el usuario alcanzo el limite de playlist existentes";
 
         }
         
@@ -125,7 +174,9 @@ public class NeoTunesManager {
         String url;
         double duration;
 
-        System.out.println("Desea agregar una cancion o podcast (1 o 2)");
+        System.out.println("Agregando audio");
+
+        System.out.print("Desea agregar una cancion o podcast (1 o 2): ");
         option = sc.nextInt();
         sc.nextLine();
 
@@ -135,26 +186,28 @@ public class NeoTunesManager {
                 double value;
                 int genreSelection;
 
+                System.out.println("Agregando cancion");
+
                 System.out.println(neotunesObj.showArtists());
-                System.out.println("Seleccione el usuario: ");
+                System.out.print("Seleccione el usuario: ");
                 userSelection = sc.nextInt();
                 sc.nextLine();
                 userSelection--;
 
-                System.out.println("Nombre de la cancion: ");
+                System.out.print("Nombre de la cancion: ");
                 name = sc.nextLine();
 
-                System.out.println("Url: ");
+                System.out.print("Url: ");
                 url = sc.nextLine();
 
-                System.out.println("Duracion: ");
+                System.out.print("Duracion: ");
                 duration = sc.nextDouble();
                 sc.nextLine();
 
-                System.out.println("Album: ");
+                System.out.print("Album: ");
                 album = sc.nextLine();
 
-                System.out.println("Precio: ");
+                System.out.print("Precio: ");
                 value = sc.nextDouble();
                 sc.nextLine();
 
@@ -162,7 +215,7 @@ public class NeoTunesManager {
                 System.out.println("2. Pop");
                 System.out.println("3. Trap");
                 System.out.println("4. House");
-                System.out.println("Seleccione un genero: ");
+                System.out.print("Seleccione un genero: ");
                 genreSelection = sc.nextInt();
                 sc.nextLine();
 
@@ -175,30 +228,32 @@ public class NeoTunesManager {
                 String description;
                 int categorySelection;
 
+                System.out.println("Agregando Podcast");
+
                 System.out.println(neotunesObj.showContentCreators());
-                System.out.println("Seleccione el usuario: ");
+                System.out.print("Seleccione el usuario: ");
                 userSelection = sc.nextInt();
                 sc.nextLine();
                 userSelection--;
 
-                System.out.println("Nombre del podcast: ");
+                System.out.print("Nombre del podcast: ");
                 name = sc.nextLine();
 
-                System.out.println("Url: ");
+                System.out.print("Url: ");
                 url = sc.nextLine();
 
-                System.out.println("Duracion: ");
+                System.out.print("Duracion: ");
                 duration = sc.nextDouble();
                 sc.nextLine();
 
-                System.out.println("Descripcion: ");
+                System.out.print("Descripcion: ");
                 description = sc.nextLine();
 
                 System.out.println("1. Politics");
                 System.out.println("2. Entertainment");
                 System.out.println("3. Videogames");
                 System.out.println("4. Fashion");
-                System.out.println("Digite la categoria: ");
+                System.out.print("Digite la categoria: ");
                 categorySelection = sc.nextInt();
                 sc.nextLine();
 
@@ -209,6 +264,66 @@ public class NeoTunesManager {
 
             default:
                 message = "opcion fuera de rango";
+                break;
+        }
+
+        return message;
+    }
+
+    public String editPlaylist() {
+        String message = "";
+        int consumerSelection;
+        int playlistSelection;
+        int actionSelection;
+        int audioSelection;
+
+        System.out.println("Editando Playlist");
+
+        System.out.println(neotunesObj.showConsumers());
+
+        System.out.print("Seleccione el usuario (segun el indice): ");
+        consumerSelection = sc.nextInt();
+        consumerSelection--;
+        sc.nextLine();
+
+        System.out.print("Agregar o eliminar audio (1 o 2)");
+        actionSelection = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println(neotunesObj.showPlaylists(consumerSelection));
+        System.out.print("Seleccione la playlist (segun el indice): ");
+        playlistSelection = sc.nextInt();
+        playlistSelection--;
+        sc.nextLine();
+
+
+        switch(actionSelection) {
+            case 1:
+                System.out.println("Agregando audio a la playlist");
+
+                System.out.println(neotunesObj.showAudios());
+                System.out.print("Seleccione el audio que se va a agregar (segun el indice): ");
+                audioSelection = sc.nextInt();
+                audioSelection--;
+                sc.nextLine();
+
+                neotunesObj.addAudioToPlaylist(playlistSelection, consumerSelection, audioSelection);
+                message = "El audio se ha agregado con exito";
+
+                break;
+
+            case 2:
+                System.out.println("Eliminando audio de la playlist");    
+
+                System.out.println(neotunesObj.showAudios(consumerSelection, playlistSelection));
+                System.out.print("Seleccione el audio que se va a eliminar (segun el indice): ");
+                audioSelection = sc.nextInt();
+                audioSelection--;
+                sc.nextLine();
+
+                neotunesObj.deleteAudioToPlaylist(playlistSelection, consumerSelection, audioSelection);
+                message = "El audio se ha eliminado con exito";
+
                 break;
         }
 

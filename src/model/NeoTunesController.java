@@ -206,5 +206,22 @@ public class NeoTunesController {
         return message;
     }
 
+    public boolean addAudioToPlaylist(int playListChosen, int consumerChosen, int newPlaylistAudio) {
+        Consumer tempUser = (Consumer) users.get(consumerChosen);
+
+        tempUser.addSongToPlaylist(playListChosen, audios.get(newPlaylistAudio));
+        users.set(consumerChosen, tempUser);
+
+        return true;
+    }
+
+    public boolean deleteAudioToPlaylist(int playListChosen, int consumerChosen, int newPlaylistAudio) {
+        Consumer tempUser = (Consumer) users.get(consumerChosen);
+
+        tempUser.deleteSongFromPlaylist(playListChosen, newPlaylistAudio);
+        users.set(consumerChosen, tempUser);
+
+        return true;
+    }
     
 }

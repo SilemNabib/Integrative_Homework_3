@@ -53,7 +53,7 @@ public abstract class Consumer extends User {
         
         for (int i = 0; i<playlists.size() ; i++){
 
-            message = (i+1)+". "+playlists.get(i).getName()+"\n";
+            message += (i+1)+". "+playlists.get(i).getName()+"\n";
 
         }
         
@@ -67,6 +67,7 @@ public abstract class Consumer extends User {
 
     public boolean addSongToPlaylist(int playlistChosen, Audio newPlaylistSong) {
         return playlists.get(playlistChosen).addSong(newPlaylistSong);
+
     }
 
  
