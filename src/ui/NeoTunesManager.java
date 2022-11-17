@@ -46,6 +46,7 @@ public class NeoTunesManager {
                 2. Reg Audio
                 3. Create Playlist
                 4. Edit Playlist
+                5. Share Playlist
                 0. Close menu
                 """);
 
@@ -57,11 +58,12 @@ public class NeoTunesManager {
     }
     public void menu(int menuChoice){
         switch (menuChoice) {
+            case 0 -> System.out.println("Closing Menu...");
             case 1 -> System.out.println(createUser());
             case 2 -> System.out.println(createAudio());
             case 3 -> System.out.println(createPlaylist());
             case 4 -> System.out.println(editPlaylist());
-            case 5 -> System.out.println("Closing Menu...");
+            case 5 -> System.out.println(sharePlaylist());
             default -> System.out.println("Option out of range.");
         }
     }
@@ -328,6 +330,27 @@ public class NeoTunesManager {
         return message;
     }
 
+    public String sharePlaylist() {
+        String message = "";
+        int userSelection;
+        int playlistSelection;
+
+        System.out.println("Share PlayList");
+
+        System.out.println(controller.showConsumers());
+        System.out.print("Select consumer: ");
+        userSelection = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println(controller.showPlaylists(userSelection-1));
+        playlistSelection = sc.nextInt();
+        sc.nextLine();
+
+        message = controller.sharePlaylist(userSelection-1, playlistSelection-1);
+
+        return message;
+    }
+
     public String showSongGenres() {
         String message = "";
 
@@ -347,5 +370,5 @@ public class NeoTunesManager {
 
         return message;
     }
-    
+
 }

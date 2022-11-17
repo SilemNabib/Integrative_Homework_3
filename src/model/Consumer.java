@@ -69,5 +69,9 @@ public abstract class Consumer extends User {
 
     }
 
+    public String sharePlaylist(int playlistIndex) {
+        return playlists.get(playlistIndex).generateId();
+    }
+
 
 }

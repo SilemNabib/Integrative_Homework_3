@@ -210,5 +210,9 @@ public class NeoTunesController {
         return true;
     }
 
-    
+    public String sharePlaylist(int consumerIndex, int playlistIndex) {
+        Consumer tempUser = (Consumer) users.get(consumerIndex);
+
+        return tempUser.sharePlaylist(playlistIndex);
+    }
 }

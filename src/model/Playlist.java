@@ -74,7 +74,7 @@ public class Playlist {
         int matrix[][] = new int[6][6];
 
         if (audios.isEmpty()){
-            message = null;
+            message = "The playlist is empty";
 
         } else {
 
@@ -105,27 +105,22 @@ public class Playlist {
 
         for (int i = 0; i<audios.size() && (!hasPodcasts || !hasSongs); i++) {
             if (audios.get(i) instanceof Song) {
-
                 hasSongs = true;
             }
 
-            if (audios.get(i) instanceof Song) {
-
+            if (audios.get(i) instanceof Podcast) {
                 hasPodcasts = true;
             }
         }
 
         if (hasSongs && hasPodcasts) {
+            return 3;
 
-            return 1;
-
-        } else if(hasSongs) {
-
+        } else if(hasPodcasts) {
             return 2;
 
         } else {
-
-            return 3;
+            return 1;
         }
     }
 
@@ -198,10 +193,6 @@ public class Playlist {
         }
 
         return message;
-    }
-
-    public boolean playlistEmpty() {
-        return audios.isEmpty();
     }
 
 }
