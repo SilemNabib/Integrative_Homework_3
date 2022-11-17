@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class BoughtSong {
     private LocalDate date;
-    private Audio song;
+    private Song song;
     
-    public BoughtSong(Audio song) {
+    public BoughtSong(Song song) {
         date = LocalDate.now();
         this.song = song;
     }

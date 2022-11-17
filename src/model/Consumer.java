@@ -19,8 +19,7 @@ public abstract class Consumer extends User {
         podcastTotalTime = 0;
 
         playlists = new ArrayList<Playlist>();
-        listenedGenre = new ArrayList<Genre>();
-        listenedCategory = new ArrayList<Category>();
+        boughtSongs = new ArrayList<BoughtSong>();
     }
 
     public ArrayList<Playlist> getPlaylist() {
@@ -73,5 +72,9 @@ public abstract class Consumer extends User {
         return playlists.get(playlistIndex).generateId();
     }
 
+    public boolean buySong(BoughtSong newBoughtSong) {
+        boughtSongs.add(newBoughtSong);
+        return true;
+    }
 
 }

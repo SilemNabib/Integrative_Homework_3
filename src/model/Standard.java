@@ -2,14 +2,14 @@ package model;
 
 public class Standard extends Consumer {
     private final int playlistAmountMax;
-    private final int playlistSongsMax;
+    private final int boughtSongsMax;
     private int tempListenedSongs;
 
     public Standard (String nickname, String id) {
         super(nickname, id);
 
         playlistAmountMax = 20;
-        playlistSongsMax = 100;
+        boughtSongsMax = 100;
         tempListenedSongs = 0;
 
     }
@@ -35,8 +35,15 @@ public class Standard extends Consumer {
             
             return false;
         }
-        
-        
+    }
+
+    public boolean buySong(BoughtSong newBoughtSong) {
+        if (boughtSongs.size() < boughtSongsMax) {
+            boughtSongs.add(newBoughtSong);
+            return true;
+        }
+
+        return false;
     }
 
 }

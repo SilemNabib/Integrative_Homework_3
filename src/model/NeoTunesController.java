@@ -215,4 +215,10 @@ public class NeoTunesController {
 
         return tempUser.sharePlaylist(playlistIndex);
     }
+
+    public boolean buySong(int consumerIndex, int songIndex) {
+        BoughtSong newBoughtSong =  new BoughtSong((Song) audios.get(songIndex));
+
+        return ((Consumer) users.get(consumerIndex)).buySong(newBoughtSong);
+    }
 }

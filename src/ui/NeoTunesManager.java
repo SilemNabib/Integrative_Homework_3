@@ -47,6 +47,7 @@ public class NeoTunesManager {
                 3. Create Playlist
                 4. Edit Playlist
                 5. Share Playlist
+                6. Buy Song
                 0. Close menu
                 """);
 
@@ -64,6 +65,7 @@ public class NeoTunesManager {
             case 3 -> System.out.println(createPlaylist());
             case 4 -> System.out.println(editPlaylist());
             case 5 -> System.out.println(sharePlaylist());
+            case 6 -> System.out.println(buySong());
             default -> System.out.println("Option out of range.");
         }
     }
@@ -351,6 +353,30 @@ public class NeoTunesManager {
         return message;
     }
 
+    public String buySong() {
+        String message = "";
+        int userSelection;
+        int songSelection;
+
+        System.out.println(controller.showConsumers());
+        System.out.print("Select consumer user: ");
+        userSelection = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println(controller.showAudios(1));
+        System.out.print("Select song: ");
+        songSelection = sc.nextInt();
+        sc.nextLine();
+
+        if (controller.buySong(userSelection, songSelection)) {
+            message = "The song was successfully purchased";
+        } else {
+            message = "Error. The user has reached the limit of purchased songs";
+        }
+
+        return message;
+    }
+
     public String showSongGenres() {
         String message = "";
 
@@ -370,5 +396,6 @@ public class NeoTunesManager {
 
         return message;
     }
+
 
 }
