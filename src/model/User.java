@@ -18,24 +18,19 @@ public abstract class User {
     public String getNickname() {
         return nickname;
     }
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
-
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
 
-    
     public LocalDate getDate() {
         return date;
     }
-
 
 }

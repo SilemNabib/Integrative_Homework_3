@@ -3,76 +3,77 @@ package ui;
 import java.util.Scanner;
 
 import model.NeoTunesController;
+import model.Genre;
+import model.Category;
 
 public class NeoTunesManager {
-    NeoTunesController neotunesObj;
 
-    public Scanner sc = new Scanner(System.in);
+    NeoTunesController controller;
+    private Scanner sc;
+
+    private Genre songGenres[];
+    private Category podcastCategories[];
 
     public NeoTunesManager() {
-         neotunesObj = new NeoTunesController();
+         controller = new NeoTunesController();
+         sc = new Scanner(System.in);
+
+         songGenres = Genre.values();
+         podcastCategories = Category.values();
     }
 
     public static void main(String[] args){
-        NeoTunesManager system = new NeoTunesManager();
-        
-        system.menu();
+
+        NeoTunesManager manager = new NeoTunesManager();
+        System.out.println("|-| Welcome To NeoTunes");
+
+        int menuChoice = 0;
+
+        do{
+            menuChoice = manager.showMenu();
+            manager.menu(menuChoice);
+
+        } while(menuChoice != 0);
+
     }
 
-    public void menu(){
-        String message = "";
-        int option = 0;
+    public int showMenu(){
+        int menuChoice = 0;
 
-        while(option != 5) {
-                System.out.println("MENU");
-                System.out.println("1. Agregar usuario");
-                System.out.println("2. Agregar audio");
-                System.out.println("3. Crear playlist");
-                System.out.println("4. Editar playlist");
-                System.out.println("5. Cerrar menu");
-                System.out.print("Seleccion: ");
-                option = sc.nextInt();
-                sc.nextLine();
+        System.out.print("""
+                |-| Menu
+                1. Reg Users
+                2. Reg Audio
+                3. Create Playlist
+                4. Edit Playlist
+                0. Close menu
+                """);
 
-        switch(option) {
-            case 1:
-                message = createUser();
-                break;
-            
-            case 2:
-                message = createAudio();
-                break;
+        System.out.print("Selection: ");
+        menuChoice = sc.nextInt();
+        sc.nextLine();
 
-            case 3:
-                message = createPlaylist();
-                break;
-
-            case 4:
-                message = editPlaylist();
-                break;
-
-            case 5:
-                message = "Cerrando menu";
-                break;
-
-            default:
-                message = "Opcion fuera de rango";
-                break;
-        }                
-        
-            System.out.println(message);
+        return menuChoice;
+    }
+    public void menu(int menuChoice){
+        switch (menuChoice) {
+            case 1 -> System.out.println(createUser());
+            case 2 -> System.out.println(createAudio());
+            case 3 -> System.out.println(createPlaylist());
+            case 4 -> System.out.println(editPlaylist());
+            case 5 -> System.out.println("Closing Menu...");
+            default -> System.out.println("Option out of range.");
         }
-        
     }
 
     public String createUser(){
+        System.out.println("|-| Register User");
+
         String message = "";
 
         String nickname;
         String id;
         int option;
-        
-        System.out.println("Agregando usuario");
 
         System.out.print("nickName: ");
         nickname = sc.nextLine();
@@ -80,9 +81,9 @@ public class NeoTunesManager {
         System.out.print("Id: ");
         id = sc.nextLine();
 
-        if (neotunesObj.checkIfIdExists(id)){
-            
-            System.out.print("Consumidor o Productor (1 o 2): ");
+        if (!controller.checkIfIdExists(id)){
+
+            System.out.print("Consumer or Producer [1 or 2]: ");
             option = sc.nextInt();
             sc.nextLine();
 
@@ -90,15 +91,15 @@ public class NeoTunesManager {
                 case 1:
                     int consumerType;
 
-                    System.out.println("Agregando consumidor");
+                    System.out.println("Consumer User");
 
-                    System.out.print("Estandar o premium (1 o 2): ");
+                    System.out.print("Standard or Premium [1 or 2]: ");
                     consumerType = sc.nextInt();
                     sc.nextLine();
 
-                    neotunesObj.addUser(neotunesObj.createConsumer(consumerType, nickname, id));
-                    
-                    message = "Se registro con exito el usuario consumidor";
+                    controller.createConsumer(consumerType, nickname, id);
+
+                    message = "The user has successfully registered";
                     break;
 
                 case 2:
@@ -106,26 +107,26 @@ public class NeoTunesManager {
                     String name;
                     String url;
 
-                    System.out.println("Agregando productor");
+                    System.out.println("Producer User");
 
-                    System.out.print("Nombre: ");
+                    System.out.print("Name: ");
                     name = sc.nextLine();
 
                     System.out.print("Url: ");
                     url = sc.nextLine();
 
-                    System.out.print("Artista o creador de contenido (1 o 2): ");
+                    System.out.print("Arists or Content Creator [1 or 2]: ");
                     producerType = sc.nextInt();
                     sc.nextLine();
 
-                    neotunesObj.addUser(neotunesObj.createProducer(producerType, nickname, id, name, url));
+                    controller.createProducer(producerType, nickname, id, name, url);
 
-                    message = "Se registro con exito el usuario productor";
+                    message = "The user has successfully registered";
                     break;
             }
-        
+
         } else {
-            message = "Ya existe un usuario con ese id";
+            message = "A user with this id already exists";
         }
 
         return message;
@@ -133,35 +134,34 @@ public class NeoTunesManager {
     }
 
     public String createPlaylist() {
+        System.out.println("|-| Register Playlist");
         String message = "";
 
         String name;
         String id;
 
-        int userSeleciton;
+        int userSelection;
 
-        System.out.println("Creando playlist");
-
-        System.out.println(neotunesObj.showConsumers());
-        System.out.print("Seleccione el usuario (segun el indice): ");
-        userSeleciton = sc.nextInt();
+        System.out.println(controller.showConsumers());
+        System.out.print("Select user (according to index): ");
+        userSelection = sc.nextInt();
         sc.nextLine();
-        userSeleciton--;
+        userSelection--;
 
-        System.out.print("Digite el nombre de la playlist: ");
+        System.out.print("Type the name of the playlist: ");
         name = sc.nextLine();
 
-        System.out.print("Digite el id: ");
+        System.out.print("Type Id: ");
         id = sc.nextLine();
 
-        if (neotunesObj.addPlaylistToConsumer(userSeleciton, neotunesObj.createPlaylist(name, id))){
-            message = "La playlist se agrego exitosamente";
+        if (controller.createPlaylist(userSelection, name, id)){
+            message = "The Playlist has successfully registered";
 
         } else {
-            message = "La playlist no se agregp, el usuario alcanzo el limite de playlist existentes";
+            message = "The playlist was not added, the user reached the limit of existing playlists";
 
         }
-        
+
         return message;
     }
 
@@ -174,9 +174,9 @@ public class NeoTunesManager {
         String url;
         double duration;
 
-        System.out.println("Agregando audio");
+        System.out.println("Register Audio");
 
-        System.out.print("Desea agregar una cancion o podcast (1 o 2): ");
+        System.out.print("You want to add a song or podcast [1 or 2]: ");
         option = sc.nextInt();
         sc.nextLine();
 
@@ -184,86 +184,80 @@ public class NeoTunesManager {
             case 1:
                 String album;
                 double value;
-                int genreSelection;
+                int genreChoice;
 
-                System.out.println("Agregando cancion");
+                System.out.println("Register Song");
 
-                System.out.println(neotunesObj.showArtists());
-                System.out.print("Seleccione el usuario: ");
+                System.out.println(controller.showArtists());
+                System.out.print("Select User: ");
                 userSelection = sc.nextInt();
-                sc.nextLine();
                 userSelection--;
+                sc.nextLine();
 
-                System.out.print("Nombre de la cancion: ");
+                System.out.print("Song name: ");
                 name = sc.nextLine();
 
                 System.out.print("Url: ");
                 url = sc.nextLine();
 
-                System.out.print("Duracion: ");
+                System.out.print("Duration: ");
                 duration = sc.nextDouble();
                 sc.nextLine();
 
                 System.out.print("Album: ");
                 album = sc.nextLine();
 
-                System.out.print("Precio: ");
+                System.out.print("Price: ");
                 value = sc.nextDouble();
                 sc.nextLine();
 
-                System.out.println("1. Rock");
-                System.out.println("2. Pop");
-                System.out.println("3. Trap");
-                System.out.println("4. House");
-                System.out.print("Seleccione un genero: ");
-                genreSelection = sc.nextInt();
+                System.out.println(showSongGenres());
+                System.out.print("Choose genre: ");
+                genreChoice = sc.nextInt();
                 sc.nextLine();
 
-                neotunesObj.addAudio(userSelection, neotunesObj.createSong(name, url, duration, album, value, genreSelection));
+                controller.createSong(userSelection, name, url, duration, album, value, songGenres[genreChoice-1]);
 
-                message = "La cancion se agrego exitosamente";
+                message = "The song was successfully added";
                 break;
-            
+
             case 2:
                 String description;
                 int categorySelection;
 
-                System.out.println("Agregando Podcast");
+                System.out.println("Register Podcast");
 
-                System.out.println(neotunesObj.showContentCreators());
-                System.out.print("Seleccione el usuario: ");
+                System.out.println(controller.showContentCreators());
+                System.out.print("Select User: ");
                 userSelection = sc.nextInt();
                 sc.nextLine();
                 userSelection--;
 
-                System.out.print("Nombre del podcast: ");
+                System.out.print("Podcast name: ");
                 name = sc.nextLine();
 
                 System.out.print("Url: ");
                 url = sc.nextLine();
 
-                System.out.print("Duracion: ");
+                System.out.print("Duration: ");
                 duration = sc.nextDouble();
                 sc.nextLine();
 
-                System.out.print("Descripcion: ");
+                System.out.print("Description: ");
                 description = sc.nextLine();
 
-                System.out.println("1. Politics");
-                System.out.println("2. Entertainment");
-                System.out.println("3. Videogames");
-                System.out.println("4. Fashion");
-                System.out.print("Digite la categoria: ");
+                System.out.println(showPodcastCategories());
+                System.out.print("Choose category: ");
                 categorySelection = sc.nextInt();
                 sc.nextLine();
 
-                neotunesObj.addAudio(userSelection, neotunesObj.createPodcast(name, url, duration, description, categorySelection));
-                
-                message = "Se agrego el podcast exitosamente";
+                controller.createPodcast(userSelection, name, url, duration, description, podcastCategories[categorySelection-1]);
+
+                message = "The Podcast was successfully added";
                 break;
 
             default:
-                message = "opcion fuera de rango";
+                message = "Option out of range";
                 break;
         }
 
@@ -272,57 +266,61 @@ public class NeoTunesManager {
 
     public String editPlaylist() {
         String message = "";
+
         int consumerSelection;
         int playlistSelection;
         int actionSelection;
         int audioSelection;
+        int audioToShow;
 
-        System.out.println("Editando Playlist");
+        System.out.println("|-| Edit Playlist");
 
-        System.out.println(neotunesObj.showConsumers());
-
-        System.out.print("Seleccione el usuario (segun el indice): ");
+        System.out.println(controller.showConsumers());
+        System.out.print("Select user (According to index): ");
         consumerSelection = sc.nextInt();
         consumerSelection--;
         sc.nextLine();
 
-        System.out.print("Agregar o eliminar audio (1 o 2)");
+        System.out.print("Add or Delete audio [1 or 2]: ");
         actionSelection = sc.nextInt();
         sc.nextLine();
 
-        System.out.println(neotunesObj.showPlaylists(consumerSelection));
-        System.out.print("Seleccione la playlist (segun el indice): ");
+        System.out.println(controller.showPlaylists(consumerSelection));
+        System.out.print("Select playlist (According to index): ");
         playlistSelection = sc.nextInt();
         playlistSelection--;
         sc.nextLine();
 
-
         switch(actionSelection) {
             case 1:
-                System.out.println("Agregando audio a la playlist");
+                System.out.println("|-| Adding audio to playlist");
 
-                System.out.println(neotunesObj.showAudios());
-                System.out.print("Seleccione el audio que se va a agregar (segun el indice): ");
+                System.out.print("Add song or podcast [1 or 2]: ");
+                audioToShow = sc.nextInt();
+                sc.nextLine();
+
+                System.out.println(controller.showAudios(audioToShow));
+                System.out.print("Select audio to add (According to index): ");
                 audioSelection = sc.nextInt();
                 audioSelection--;
                 sc.nextLine();
 
-                neotunesObj.addAudioToPlaylist(playlistSelection, consumerSelection, audioSelection);
-                message = "El audio se ha agregado con exito";
+                controller.addAudioToPlaylist(playlistSelection, consumerSelection, audioSelection);
+                message = "The audio was successfully added";
 
                 break;
 
             case 2:
-                System.out.println("Eliminando audio de la playlist");    
+                System.out.println("Removing audio from playlist");
 
-                System.out.println(neotunesObj.showAudios(consumerSelection, playlistSelection));
-                System.out.print("Seleccione el audio que se va a eliminar (segun el indice): ");
+                System.out.println(controller.showAudios(consumerSelection, playlistSelection));
+                System.out.print("Select Audio to remove (According to index): ");
                 audioSelection = sc.nextInt();
                 audioSelection--;
                 sc.nextLine();
 
-                neotunesObj.deleteAudioToPlaylist(playlistSelection, consumerSelection, audioSelection);
-                message = "El audio se ha eliminado con exito";
+                controller.deleteAudioToPlaylist(playlistSelection, consumerSelection, audioSelection);
+                message = "The audio was successfully removed";
 
                 break;
         }
@@ -330,5 +328,24 @@ public class NeoTunesManager {
         return message;
     }
 
+    public String showSongGenres() {
+        String message = "";
 
+        for (int i = 0; i<songGenres.length; i++) {
+            message += (i + 1) + ". " + songGenres[i] + "\n";
+        }
+
+        return message;
+    }
+
+    public String showPodcastCategories() {
+        String message = "";
+
+        for (int i = 0; i< podcastCategories.length; i++) {
+            message += (i + 1) + ". " + podcastCategories[i] + "\n";
+        }
+
+        return message;
+    }
+    
 }

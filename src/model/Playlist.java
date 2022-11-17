@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Playlist {
     private ArrayList<Audio> audios;
@@ -51,7 +52,7 @@ public class Playlist {
     public String toString() {
         String message = "";
 
-        message += "Nombre: "+name+"\nId: "+id;
+        message += "Nombre: " + name + " Id: " + id;
 
         return message;
     }
@@ -64,6 +65,143 @@ public class Playlist {
         }
 
         return message;
+    }
+
+    public String generateId() {
+        Random random = new Random();
+
+        String message = "";
+        int matrix[][] = new int[6][6];
+
+        if (audios.isEmpty()){
+            message = null;
+
+        } else {
+
+            for (int i = 0; i<matrix.length; i++) {
+                for (int j = 0; j< matrix.length; j++) {
+                    matrix[i][j] = random.nextInt(10);
+                    message += matrix[i][j] + " ";
+
+                }
+
+                message += "\n";
+            }
+
+            switch (checkPlaylistContent()) {
+                case 1 -> message += "Share Code: " + idOnlySongs(matrix);
+                case 2 -> message += "Share Code: " + idOnlyPodcasts(matrix);
+                case 3 -> message += "Share Code: " + idBothAudios(matrix);
+            }
+
+        }
+
+        return message;
+    }
+
+    public int checkPlaylistContent(){
+        boolean hasSongs = false;
+        boolean hasPodcasts = false;
+
+        for (int i = 0; i<audios.size() && (!hasPodcasts || !hasSongs); i++) {
+            if (audios.get(i) instanceof Song) {
+
+                hasSongs = true;
+            }
+
+            if (audios.get(i) instanceof Song) {
+
+                hasPodcasts = true;
+            }
+        }
+
+        if (hasSongs && hasPodcasts) {
+
+            return 1;
+
+        } else if(hasSongs) {
+
+            return 2;
+
+        } else {
+
+            return 3;
+        }
+    }
+
+    public String idOnlySongs(int[][] matrix){
+        String message = "";
+
+        for (int i = matrix.length-1; i >= 0; i--) {
+            message += matrix[i][0];
+        }
+
+        for (int i = 1; i<matrix.length-1; i++) {
+            message += matrix[i][i];
+        }
+
+        for (int i = matrix.length-1; i >= 0; i--) {
+            message += matrix[i][5];
+        }
+
+        return message;
+    }
+
+    public String idOnlyPodcasts(int[][] matrix){
+        String message = "";
+
+        for (int i = 0; i<3; i++) {
+            message += matrix[0][i];
+        }
+
+        for (int i = 1; i<matrix.length-1; i++) {
+            message += matrix[i][2];
+        }
+
+        for (int i = 2; i > 4; i++) {
+            message += matrix[5][i];
+        }
+
+        for (int i = matrix.length-2; i<=1; i++) {
+            message += matrix[i][3];
+        }
+
+        for (int i = 3; i< matrix.length; i++) {
+            message += matrix[0][i];
+        }
+
+        return message;
+    }
+
+    public String idBothAudios(int[][] matrix){
+        String message = "";
+        int count = 0;
+
+        for (int i = matrix.length-1; i >= 0; i--) {
+
+            if (i<= 2) {
+                count++;
+            }
+
+            for (int j = matrix.length-1; j >= (0+count); j--) {
+                if(i % 2 == 0) {
+                    if (!(j % 2 == 0)) {
+                        message += matrix[i][j];
+                    }
+                } else {
+                    if (j % 2 == 0) {
+                        message += matrix[i][j];
+                    }
+                }
+
+            }
+        }
+
+        return message;
+    }
+
+    public boolean playlistEmpty() {
+        return audios.isEmpty();
     }
 
 }

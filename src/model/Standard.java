@@ -22,6 +22,9 @@ public class Standard extends Consumer {
         this.tempListenedSongs = tempListenedSongs;
     }
 
+    /**
+     *
+     */
     public boolean addPlaylist(Playlist newPlaylist){
         if (playlists.size()<playlistAmountMax) {
 
