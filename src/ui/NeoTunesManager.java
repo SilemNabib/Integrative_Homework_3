@@ -50,6 +50,7 @@ public class NeoTunesManager {
                 5. Share Playlist
                 6. Buy Song
                 7. Play Song
+                8. Report Menu
                 0. Close menu
                 """);
 
@@ -69,6 +70,7 @@ public class NeoTunesManager {
             case 5 -> System.out.println(sharePlaylist());
             case 6 -> System.out.println(buySong());
             case 7 -> System.out.println(playSong());
+            case 8 -> reportMenu();
             default -> System.out.println("Option out of range.");
         }
     }
@@ -427,4 +429,66 @@ public class NeoTunesManager {
         return message;
     }
 
+    public void reportMenu(){
+        int menuChoice = 0;
+
+        System.out.print("""
+                |-| Report Menu
+                1. Report the total number of reproductions according to their type
+                2. Report most listened genre
+                3. Report most liestened category
+                4. Report Top 5 Artists and Content Creator
+                5. Report Top 5 Audios and Podcasts
+                6. Report Sold Songs by genre
+                7. Report Most sold song
+                """);
+
+        System.out.print("Selection: ");
+        menuChoice = sc.nextInt();
+        sc.nextLine();
+
+        switch (menuChoice) {
+            case 1 -> System.out.println(reportAudioReproductions());
+            case 2 -> System.out.println(reportMostListenedGenre());
+            case 3 -> System.out.println(reportMostListenedCategory());
+            case 4 -> System.out.println(reportTopProducers());
+            case 5 -> System.out.println(reportTopAudios());
+            case 6 -> System.out.println(reportGenreSoldSongs());
+            case 7 -> System.out.println(reportMotSoldSong());
+            default -> System.out.println("Option out of range");
+        }
+    }
+
+    public String reportAudioReproductions() {
+        return controller.reportAudioReproductions();
+    }
+
+    public String reportMostListenedGenre() {
+        return controller.reportMostListenedGenre();
+    }
+
+    public String reportMostListenedCategory() {
+        return controller.reportMostListenedCategory();
+    }
+
+    public String reportTopProducers() {
+        String message = "";
+
+        message += controller.showArtistTop();
+        message += controller.showContCreatorTop();
+
+        return message;
+    }
+
+    public String reportTopAudios() {
+        return controller.showAudiosTop();
+    }
+
+    public String reportGenreSoldSongs() {
+        return controller.reportGenreSoldSong();
+    }
+
+    public String reportMotSoldSong() {
+        return controller.reportMostSoldSong(controller.findMostSoldSong());
+    }
 }

@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class NeoTunesController {
     private ArrayList<User> users;
@@ -322,7 +324,324 @@ public class NeoTunesController {
         return message;
     }
 
-    
+    public String reportAudioReproductions() {
+        String report = "";
+        int[] countGenreReproductions = new int[Genre.values().length];
+        countGenreReproductions[0] = 0;
+        countGenreReproductions[1] = 0;
+        countGenreReproductions[2] = 0;
+        countGenreReproductions[3] = 0;
+
+        int[] countCategoryReproductions = new int[Category.values().length];
+        countCategoryReproductions[0] = 0;
+        countCategoryReproductions[1] = 0;
+        countCategoryReproductions[2] = 0;
+        countCategoryReproductions[3] = 0;
+
+        for (int i = 0; i<audios.size(); i++) {
+            if (audios.get(i) instanceof Song) {
+                Genre tempGenre = ((Song) audios.get(i)).getGenre();
+
+                if (tempGenre.equals(Genre.ROCK)) {
+                    countGenreReproductions[0] += audios.get(i).getReproductedTimes();
+                }
+                if (tempGenre.equals(Genre.POP)) {
+                    countGenreReproductions[1] += audios.get(i).getReproductedTimes();
+                }
+                if (tempGenre.equals(Genre.TRAP)) {
+                    countGenreReproductions[2] += audios.get(i).getReproductedTimes();
+                }
+                if (tempGenre.equals(Genre.HOUSE)) {
+                    countGenreReproductions[3] += audios.get(i).getReproductedTimes();
+                }
+            }
+        }
+
+        for (int i = 0; i<audios.size(); i++) {
+            if (audios.get(i) instanceof Podcast) {
+                Category tempCategory = ((Podcast) audios.get(i)).getCategory();
+
+                if (tempCategory.equals(Category.POLITICS)) {
+                    countCategoryReproductions[0] += audios.get(i).getReproductedTimes();
+                }
+                if (tempCategory.equals(Category.ENTERTAINMENT)) {
+                    countCategoryReproductions[1] += audios.get(i).getReproductedTimes();
+                }
+                if (tempCategory.equals(Category.VIDEOGAMES)) {
+                    countCategoryReproductions[2] += audios.get(i).getReproductedTimes();
+                }
+                if (tempCategory.equals(Category.FASHION)) {
+                    countCategoryReproductions[3] += audios.get(i).getReproductedTimes();
+                }
+            }
+        }
+
+        report += "Genre";
+        for (int i = 0; i<Genre.values().length;i++){
+            report += Genre.values()[i] + " reproductions: " + countGenreReproductions[i] + "\n";
+        }
+
+        report += "Category";
+        for (int i = 0; i<Category.values().length;i++){
+            report += Category.values()[i] + " reproductions: " + countCategoryReproductions[i] + "\n";
+        }
+
+        return report;
+    }
+
+    public ArrayList<Integer> findMostListenedGenre(){
+        ArrayList<Integer> countGenreReproductions = new ArrayList<Integer>();
+
+        for (int i = 0; i<Genre.values().length;i++) {
+            countGenreReproductions.add(0);
+        }
+
+        for (int i = 0; i<audios.size(); i++) {
+            if (audios.get(i) instanceof Song) {
+                Genre tempGenre = ((Song) audios.get(i)).getGenre();
+                int audioReproductions = audios.get(i).getReproductedTimes();
+
+                if (tempGenre.equals(Genre.ROCK)) {
+                    countGenreReproductions.set(0, countGenreReproductions.get(0)+audioReproductions);
+                }
+                if (tempGenre.equals(Genre.POP)) {
+                    countGenreReproductions.set(1, countGenreReproductions.get(1)+audioReproductions);
+                }
+                if (tempGenre.equals(Genre.TRAP)) {
+                    countGenreReproductions.set(2, countGenreReproductions.get(2)+audioReproductions);
+                }
+                if (tempGenre.equals(Genre.HOUSE)) {
+                    countGenreReproductions.set(3, countGenreReproductions.get(3)+audioReproductions);
+                }
+            }
+        }
+
+        return countGenreReproductions;
+    }
+
+    public String reportMostListenedGenre(){
+        ArrayList<Integer> countGenreReproductions = findMostListenedGenre();
+        ArrayList<Integer> organizedArray = countGenreReproductions;
+        organizedArray.sort(Comparator.reverseOrder());
+
+        int genrePosition = 0;
+
+        for (int i = 0; i<countGenreReproductions.size(); i++) {
+            if (organizedArray.get(0) == countGenreReproductions.get(i)) {
+                genrePosition = i;
+            }
+        }
+
+        String report = "The most listened genre in Neotunes is " + Genre.values()[genrePosition] + " with" + organizedArray.get(0) + " reproductions";
+
+        return report;
+    }
+
+    public ArrayList findMostListenedCategory(){
+        ArrayList<Integer> countCategoryReproductions = new ArrayList<Integer>();
+
+        for (int i = 0; i<Genre.values().length;i++) {
+            countCategoryReproductions.add(0);
+        }
+
+        for (int i = 0; i<audios.size(); i++) {
+            if (audios.get(i) instanceof Podcast) {
+                Category tempGenre = ((Podcast) audios.get(i)).getCategory();
+                int audioReproductions = audios.get(i).getReproductedTimes();
+
+                if (tempGenre.equals(Category.POLITICS)) {
+                    countCategoryReproductions.set(0, countCategoryReproductions.get(0)+audioReproductions);
+                }
+                if (tempGenre.equals(Category.ENTERTAINMENT)) {
+                    countCategoryReproductions.set(1, countCategoryReproductions.get(1)+audioReproductions);
+                }
+                if (tempGenre.equals(Category.VIDEOGAMES)) {
+                    countCategoryReproductions.set(2, countCategoryReproductions.get(2)+audioReproductions);
+                }
+                if (tempGenre.equals(Category.FASHION)) {
+                    countCategoryReproductions.set(3, countCategoryReproductions.get(3)+audioReproductions);
+                }
+            }
+        }
+
+        return countCategoryReproductions;
+    }
+
+    public String reportMostListenedCategory(){
+        ArrayList<Integer> countCategoryReproductions = findMostListenedCategory();
+        ArrayList<Integer> organizedArray = countCategoryReproductions;
+        organizedArray.sort(Comparator.reverseOrder());
+
+        int genrePosition = 0;
+
+        for (int i = 0; i<countCategoryReproductions.size(); i++) {
+            if (organizedArray.get(0) == countCategoryReproductions.get(i)) {
+                genrePosition = i;
+            }
+        }
+
+        String report = "The most listened Category in Neotunes is " + Category.values()[genrePosition] + " with" + organizedArray.get(0) + " reproductions";
+
+        return report;
+    }
+
+    public ArrayList<Artist> sortArtists() {
+        ArrayList<Artist> artists = new ArrayList<Artist>();
+
+        for (int i = 0; i<users.size(); i++) {
+            if (users.get(i) instanceof Artist) {
+                artists.add((Artist) users.get(i));
+            }
+        }
+
+        Collections.sort(artists, Comparator.comparing(Producer::getReproductedTimes));
+
+        return artists;
+    }
+
+    public ArrayList<ContentCreator> sortContCreators() {
+        ArrayList<ContentCreator> contentCreators = new ArrayList<ContentCreator>();
+
+        for (int i = 0; i<users.size(); i++) {
+            if (users.get(i) instanceof ContentCreator) {
+                contentCreators.add((ContentCreator) users.get(i));
+            }
+        }
+
+        Collections.sort(contentCreators, Comparator.comparing(Producer::getReproductedTimes));
+
+        return contentCreators;
+    }
+
+    public String showArtistTop() {
+        String report = "Top Artist\n";
+        int count = 0;
+
+        ArrayList<Artist> artists = sortArtists();
+
+        for (int i = 0; i<artists.size() && count<5; i++) {
+            report += (i+1) + ". " + artists.get(i).getName() + "Reproductions: " + artists.get(i).getReproductedTimes() + "\n";
+            count++;
+        }
+
+        return report;
+    }
+
+    public String showContCreatorTop() {
+        String report = "Top Content Creator\n";
+        int count = 0;
+
+        ArrayList<ContentCreator> contCreator = sortContCreators();
+
+        for (int i = 0; i<contCreator.size() && count<5; i++) {
+            report += (i+1) + ". " + contCreator.get(i).getName() + "Reproductions: " + contCreator.get(i).getReproductedTimes() + "\n";
+            count++;
+        }
+
+        return report;
+    }
+
+    public ArrayList sortSongs() {
+        ArrayList<Song> songs = new ArrayList<Song>();
+
+        for (int i = 0; i<audios.size(); i++) {
+            if (audios.get(i) instanceof Song) {
+                songs.add((Song) audios.get(i));
+            }
+        }
+
+        Collections.sort(songs, Comparator.comparing(Audio::getReproductedTimes));
+
+        return songs;
+    }
+
+    public ArrayList sortPodcasts() {
+        ArrayList<Podcast> podcasts = new ArrayList<Podcast>();
+
+        for (int i = 0; i<audios.size(); i++) {
+            if (audios.get(i) instanceof Podcast) {
+                podcasts.add((Podcast) audios.get(i));
+            }
+        }
+
+        Collections.sort(podcasts, Comparator.comparing(Audio::getReproductedTimes));
+
+        return podcasts;
+    }
+
+    public String showAudiosTop() {
+        String report = "Top Songs \n";
+        int count = 0;
+
+        ArrayList<Song> songs = sortSongs();
+
+        for (int i = 0; i<songs.size() && count<10; i++) {
+            report += (i+1) + ". " + songs.get(i).getName() + "Genre: " + songs.get(i).getGenre() + "Reproductions: "+ songs.get(i).getReproductedTimes() + "\n";
+            count++;
+        }
+
+        count = 0;
+
+        ArrayList<Podcast> podcasts = sortPodcasts();
+
+        for (int i = 0; i<podcasts.size() && count<10; i++) {
+            report += (i+1) + ". " + podcasts.get(i).getName() + "Category: " + podcasts.get(i).getCategory() + "Reproductions: "+ podcasts.get(i).getReproductedTimes() + "\n";
+            count++;
+        }
+
+        return report;
+    }
+
+    public String reportGenreSoldSong() {
+        String report = "";
+
+        double[] genreTotalPrice = new double[Genre.values().length];
+        int[] totalSolds = new int[Genre.values().length];
+
+        ArrayList<Song> songs = sortSongs();
+
+        for (Song x : songs) {
+
+            if(x.getGenre().equals(Genre.ROCK)) {
+                genreTotalPrice[0] += x.getValue()* x.getSoldTimes();
+                totalSolds[0] += x.getSoldTimes();
+            }
+
+            if(x.getGenre().equals(Genre.POP)) {
+                genreTotalPrice[1] += x.getValue()* x.getSoldTimes();
+                totalSolds[1] += x.getSoldTimes();
+            }
+
+            if(x.getGenre().equals(Genre.TRAP)) {
+                genreTotalPrice[2] += x.getValue()* x.getSoldTimes();
+                totalSolds[2] += x.getSoldTimes();
+            }
+
+            if(x.getGenre().equals(Genre.HOUSE)) {
+                genreTotalPrice[3] += x.getValue()* x.getSoldTimes();
+                totalSolds[3] += x.getSoldTimes();
+            }
+        }
+
+        for (int i = 0; i<genreTotalPrice.length ; i++) {
+            report += Genre.values()[i] + "Total solds: " + totalSolds[i] + "Total Sold: " + genreTotalPrice[i] + "\n";
+        }
+
+        return report;
+    }
+
+    public Song findMostSoldSong() {
+        ArrayList<Song> songs = sortSongs();
+        Collections.sort(songs, Comparator.comparing(Song::getSoldTimes));
+
+        return songs.get(0);
+    }
+
+    public String reportMostSoldSong(Song mostSoldSong) {
+        String report = mostSoldSong.getName() + "Total Solds Number: " + mostSoldSong.getSoldTimes() + "Total Sold: " + (mostSoldSong.getSoldTimes()*mostSoldSong.getValue());
+
+        return report;
+    }
 }
 
 
