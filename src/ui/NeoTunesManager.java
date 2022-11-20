@@ -1,5 +1,6 @@
 package ui;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 import model.NeoTunesController;
@@ -48,6 +49,7 @@ public class NeoTunesManager {
                 4. Edit Playlist
                 5. Share Playlist
                 6. Buy Song
+                7. Play Song
                 0. Close menu
                 """);
 
@@ -66,6 +68,7 @@ public class NeoTunesManager {
             case 4 -> System.out.println(editPlaylist());
             case 5 -> System.out.println(sharePlaylist());
             case 6 -> System.out.println(buySong());
+            case 7 -> System.out.println(playSong());
             default -> System.out.println("Option out of range.");
         }
     }
@@ -397,5 +400,31 @@ public class NeoTunesManager {
         return message;
     }
 
+    public String playSong() {
+        String message = "";
+
+        int consumerSelection;
+        int audioTypeSelection;
+        int chosenAudio;
+
+        System.out.println("Play Song");
+
+        System.out.println(controller.showConsumers());
+        consumerSelection = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Want to play Songs or Podcast [1 or 2]:");
+        audioTypeSelection = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println(controller.showAudios(audioTypeSelection));
+        System.out.print("Selection: ");
+        chosenAudio = sc.nextInt();
+        sc.nextLine();
+
+        message = controller.playAudio(consumerSelection-1, chosenAudio-1);
+
+        return message;
+    }
 
 }

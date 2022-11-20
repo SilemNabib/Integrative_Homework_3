@@ -118,12 +118,122 @@ public class NeoTunesController {
         return false;
     }
 
+    public boolean addAudioToPlaylist(int playListChosen, int consumerChosen, int newPlaylistAudio) {
+        Consumer tempUser = (Consumer) users.get(consumerChosen);
+
+        boolean status = tempUser.addAudioToPlaylist(playListChosen, audios.get(newPlaylistAudio));
+        users.set(consumerChosen, tempUser);
+
+        return status;
+    }
+
+    public boolean deleteAudioToPlaylist(int playListChosen, int consumerChosen, int newPlaylistAudio) {
+        Consumer tempUser = (Consumer) users.get(consumerChosen);
+
+        tempUser.deleteAudioFromPlaylist(playListChosen, newPlaylistAudio);
+        users.set(consumerChosen, tempUser);
+
+        return true;
+    }
+
+    public String sharePlaylist(int consumerIndex, int playlistIndex) {
+        Consumer tempUser = (Consumer) users.get(consumerIndex);
+
+        return tempUser.sharePlaylist(playlistIndex);
+    }
+
+    public boolean buySong(int consumerIndex, int songIndex) {
+        BoughtSong newBoughtSong =  new BoughtSong((Song) audios.get(songIndex));
+
+        int tempInt = ((Song) audios.get(songIndex)).getSoldTimes();
+        ((Song) audios.get(songIndex)).setSoldTimes(tempInt+1);
+
+        return ((Consumer) users.get(consumerIndex)).buySong(newBoughtSong);
+    }
+
+    public String playAudio(int consumerIndex, int audioIndex) {
+        String message = "The Audio cannot be played";
+        boolean exists = false;
+        int count = 0;
+
+        if (((Consumer) users.get(consumerIndex)).playAudio(audios.get(audioIndex))) {
+
+            if (audios.get(audioIndex) instanceof Song) {
+                Artist tempUser = (Artist) findAudiosProducer(audios.get(audioIndex));
+
+                for (Artist artistX : ((Consumer) users.get(consumerIndex)).getListenedArtists()) {
+                    if (artistX.equals(tempUser)) {
+                        ((Consumer) users.get(consumerIndex)).setCountListenedArtists(count);
+                        message = "Playing Song: " + audios.get(audioIndex).getName() + "\n";
+                        exists = true;
+
+                    }
+                    count++;
+                }
+
+                if (!exists) {
+                    ((Consumer) users.get(consumerIndex)).setListenedArtists(tempUser);
+                }
+            }
+
+            if (audios.get(audioIndex) instanceof Podcast) {
+                ContentCreator tempUser = (ContentCreator) findAudiosProducer(audios.get(audioIndex));
+
+                for (ContentCreator artistX : ((Consumer) users.get(consumerIndex)).getListenedContCreator()) {
+                    if (artistX.equals(tempUser)) {
+                        message = "Playing Podcast: " + audios.get(audioIndex).getName() + "\n";
+                        ((Consumer) users.get(consumerIndex)).setCountListenedContCreator(count);
+                        exists = true;
+
+                    }
+                    count++;
+                }
+
+                if (!exists) {
+                    ((Consumer) users.get(consumerIndex)).setListenedContCreator(tempUser);
+                }
+            }
+        }
+
+        if (users.get(consumerIndex) instanceof Standard) {
+            int tempVar = ((Standard) users.get(consumerIndex)).getTempListenedSongs();
+            ((Standard) users.get(consumerIndex)).setTempListenedSongs(tempVar+1);
+
+            if (((Standard) users.get(consumerIndex)).getTempListenedSongs() == 2) {
+                ((Standard) users.get(consumerIndex)).setTempListenedSongs(0);
+                message += "Playing ad \n ";
+
+            }
+        }
+
+
+
+        return message;
+    }
+
+    public User findAudiosProducer(Audio audioData) {
+        for (User x : users) {
+            if (x instanceof Producer) {
+                Producer tempUser = (Producer) x;
+
+                for (Audio y : tempUser.getAudios()){
+                    if (audioData.equals(y)){
+                        return x;
+                    }
+                }
+            }
+
+        }
+
+        return null;
+    }
+
     public String showArtists(){
         String message = "";
 
-        for (int i = 0; i<users.size(); i++){
+        for (int i = 0; i< users.size(); i++){
             if (users.get(i) instanceof Artist){
-               message  += ((i+1)+". "+users.get(i).getNickname()+"\n");
+               message  += ((i+1)+". "+ users.get(i).getNickname()+"\n");
             }
         }
 
@@ -154,10 +264,10 @@ public class NeoTunesController {
 
     public String showContentCreators(){
         String message = "";
-        
-        for (int i = 0; i<users.size(); i++){
+
+        for (int i = 0; i< users.size(); i++){
             if (users.get(i) instanceof ContentCreator){
-               message  += ((i+1)+". "+users.get(i).getNickname()+"\n"); 
+                message  += ((i+1)+". "+ users.get(i).getNickname()+"\n");
             }
         }
 
@@ -166,18 +276,18 @@ public class NeoTunesController {
 
     public String showPlaylists(int indexConsumer) {
         Consumer tempUser = (Consumer) users.get(indexConsumer);
-         
+
         String message = tempUser.showPlaylists();
-       
+
         return message;
     }
 
     public String showConsumers(){
         String message = "";
-        
-        for (int i = 0; i<users.size(); i++){
+
+        for (int i = 0; i< users.size(); i++){
             if (users.get(i) instanceof Consumer){
-               message  += ((i+1)+". "+users.get(i).getNickname()+"\n"); 
+                message  += ((i+1)+". "+ users.get(i).getNickname()+"\n");
             }
         }
 
@@ -186,39 +296,33 @@ public class NeoTunesController {
 
     public String showAudios(int indexConsumer, int indexPlaylist) {
         Consumer tempUser = (Consumer) users.get(indexConsumer);
-         
+
         String message = tempUser.getPlaylist().get(indexPlaylist).audioToString();
-       
+
         return message;
     }
 
-    public boolean addAudioToPlaylist(int playListChosen, int consumerChosen, int newPlaylistAudio) {
-        Consumer tempUser = (Consumer) users.get(consumerChosen);
+    public String showSongGenre() {
+        String message = "";
 
-        boolean status = tempUser.addAudioToPlaylist(playListChosen, audios.get(newPlaylistAudio));
-        users.set(consumerChosen, tempUser);
+        for (int i = 0; i<Genre.values().length; i++) {
+            message += (i+1) + ". " + Genre.values()[i];
+        }
 
-        return status;
+        return message;
     }
 
-    public boolean deleteAudioToPlaylist(int playListChosen, int consumerChosen, int newPlaylistAudio) {
-        Consumer tempUser = (Consumer) users.get(consumerChosen);
+    public String showPodcastCategory() {
+        String message = "";
 
-        tempUser.deleteAudioFromPlaylist(playListChosen, newPlaylistAudio);
-        users.set(consumerChosen, tempUser);
+        for (int i = 0; i<Category.values().length; i++) {
+            message += (i+1) + ". " + Category.values()[i];
+        }
 
-        return true;
+        return message;
     }
 
-    public String sharePlaylist(int consumerIndex, int playlistIndex) {
-        Consumer tempUser = (Consumer) users.get(consumerIndex);
-
-        return tempUser.sharePlaylist(playlistIndex);
-    }
-
-    public boolean buySong(int consumerIndex, int songIndex) {
-        BoughtSong newBoughtSong =  new BoughtSong((Song) audios.get(songIndex));
-
-        return ((Consumer) users.get(consumerIndex)).buySong(newBoughtSong);
-    }
+    
 }
+
+

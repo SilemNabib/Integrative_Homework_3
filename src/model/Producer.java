@@ -55,6 +55,10 @@ public abstract class Producer extends User  {
         this.listenedTime = listenedTime;
     }
 
+    public ArrayList<Audio> getAudios() {
+        return audios;
+    }
+
     public boolean addAudioToProducer(Audio newAudio) {
         audios.add(newAudio);
         return true;

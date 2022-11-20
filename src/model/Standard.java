@@ -46,4 +46,9 @@ public class Standard extends Consumer {
         return false;
     }
 
+    public boolean playAudio(Audio playedAudio) {
+        tempListenedSongs++;
+        return super.playAudio(playedAudio);
+    }
+
 }

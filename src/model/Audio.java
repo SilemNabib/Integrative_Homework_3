@@ -48,4 +48,8 @@ public abstract class Audio implements Playable{
         this.reproductedTimes = reproductedTimes;
     }
 
+    @Override
+    public void play() {
+        reproductedTimes++;
+    }
 }
